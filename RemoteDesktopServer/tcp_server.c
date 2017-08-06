@@ -7,16 +7,17 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include "mouse_keyboard_events.c"
+#include <ApplicationServices/ApplicationServices.h>
+#include <unistd.h>
 
 #define BUFSIZE 1024
 
 int main(int argc, char **argv) {
   int port_number, parentfd, childfd, optval, n;
   struct sockaddr_in serveraddr, clientaddr;
-  struct hostent *hostp; /* client host(DNS) info */
   char buf[BUFSIZE];
   char output_msg[BUFSIZE] = "Thank you for connecting with our server"; /* message buffer */
-  char *hostaddrp; /* dotted decimal host addr string */
   socklen_t clientlen;
 
   if(argc != 2) {
@@ -59,20 +60,23 @@ int main(int argc, char **argv) {
     if (childfd < 0)
       fprintf(stderr, "ERROR on accept");
 
-    hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, sizeof(clientaddr.sin_addr.s_addr), AF_INET);
-    if (hostp == NULL)
-      fprintf(stderr, "ERROR on gethostbyaddr");
-    hostaddrp = inet_ntoa(clientaddr.sin_addr);
-    if (hostaddrp == NULL)
-      fprintf(stderr, "ERROR on inet_ntoa\n");
-    printf("server established connection with %s (%s)\n", hostp->h_name, hostaddrp);
+    printf("server established connection\n");
 
     // read input string from client
     bzero(buf, BUFSIZE);
-    n = read(childfd, buf, BUFSIZE);
+    while((n = read(childfd, buf, BUFSIZE - 1)) > 0);
     if (n < 0)
       fprintf(stderr, "ERROR reading from socket");
-    printf("server received %d bytes: %s", n, buf);
+    printf("server received: %s\n", buf);
+    if(strcmp(buf, "a") == 0){
+      leftMouseUp();
+    } else if(strcmp(buf, "b") == 0){
+      leftMouseDown();
+    } else if(strcmp(buf, "c") == 0){
+      rightMouseUp();
+    } else if(strcmp(buf, "d") == 0){
+      rightMouseDown();
+    }
 
     // write back to the client
     n = write(childfd, output_msg, strlen(output_msg));
