@@ -14,12 +14,12 @@ public class TCPClient {
         }
     }
 
-    public static void sendMessage(char message) {
+    public static void sendMessage(String message) {
         if(clientSocket != null) {
             DataOutputStream outToServer = null;
             try {
                 outToServer = new DataOutputStream(clientSocket.getOutputStream());
-                outToServer.writeChar(message);
+                outToServer.writeBytes(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }

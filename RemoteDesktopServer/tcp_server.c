@@ -8,8 +8,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "mouse_keyboard_events.c"
-#include <ApplicationServices/ApplicationServices.h>
-#include <unistd.h>
 
 #define BUFSIZE 1024
 
@@ -76,6 +74,14 @@ int main(int argc, char **argv) {
       rightMouseUp();
     } else if(strcmp(buf, "d") == 0){
       rightMouseDown();
+    } else if(buf[0] == 'k'){
+      memmove(buf, buf + 1, strlen(buf));
+      printf("%s printed \n", buf);
+      keyboard(buf);
+    } else {
+      memmove(buf, buf + 1, strlen(buf));
+      printf("%s printed \n", buf);
+      keyboard(buf);
     }
 
     // write back to the client

@@ -40,3 +40,13 @@ void rightMouseDown() {
   CGEventPost(kCGHIDEventTap, click);
   CFRelease(click);
 }
+
+void keyboard(char* buf) {
+  printf("creating keyboard event: %s", buf);
+  CGEventRef event1 = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)buf, true);
+  CGEventRef event2 = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)buf, false);
+  CGEventPost(kCGHIDEventTap, event1);
+  CGEventPost(kCGHIDEventTap, event2);
+  CFRelease(event1);
+  CFRelease(event2);
+}
