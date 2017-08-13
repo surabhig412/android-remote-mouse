@@ -6,5 +6,5 @@ public class Constants {
     public static final String RIGHTMOUSEUP = "c";
     public static final String RIGHTMOUSEDOWN = "d";
     public static final String KEYBOARD = "k";
-
+    public static final String MOUSEMOVED = "m";
 }

@@ -78,10 +78,18 @@ int main(int argc, char **argv) {
       memmove(buf, buf + 1, strlen(buf));
       printf("%s printed \n", buf);
       keyboard(buf);
-    } else {
+    } else if(buf[0] == 'm'){
       memmove(buf, buf + 1, strlen(buf));
-      printf("%s printed \n", buf);
-      keyboard(buf);
+      char *p = strtok(buf, ";");
+      float x = atof(p);
+      p = strtok (NULL, ";");
+      float y = atof(p);
+      // while(p != NULL) {
+      //   printf("%s printed \n", p);
+      //   p = strtok (NULL, ";");
+      // }
+
+      mouseMove(x, y);
     }
 
     // write back to the client

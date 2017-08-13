@@ -43,10 +43,20 @@ void rightMouseDown() {
 
 void keyboard(char* buf) {
   printf("creating keyboard event: %s", buf);
-  CGEventRef event1 = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)buf, true);
-  CGEventRef event2 = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)buf, false);
+  CGEventRef event1 = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)atoi(buf), true);
+  CGEventRef event2 = CGEventCreateKeyboardEvent (NULL, (CGKeyCode)atoi(buf), false);
   CGEventPost(kCGHIDEventTap, event1);
   CGEventPost(kCGHIDEventTap, event2);
   CFRelease(event1);
   CFRelease(event2);
+}
+
+void mouseMove(float x, float y) {
+  CGEventRef move1 = CGEventCreateMouseEvent(
+         NULL, kCGEventMouseMoved,
+         CGPointMake(x, y),
+         kCGMouseButtonLeft // ignored
+  );
+  CGEventPost(kCGHIDEventTap, move1);
+  CFRelease(move1);
 }
